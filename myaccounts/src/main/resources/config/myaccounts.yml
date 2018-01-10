@@ -1,0 +1,11 @@
+# path to access within the customers API
+customers_path: /v1/customers/%s
+customers_serviceID: training.customers-1.00.00
+
+# path to access within the accounts API
+accounts_path: /v1/accounts?cust_id=%s
+accounts_serviceID: training.accounts-1.00.00
+
+# path to access within the transacts API
+transacts_path: /v1/transactions?account_id=%s
+transacts_serviceID: training.transacts-1.00.00

@@ -1,0 +1,3 @@
+# path to access within the accounts API
+accounts_path: /v1/accounts?cust_id=%s
+accounts_serviceID: training.accounts-1.00.00

@@ -1,0 +1,48 @@
+{"basePath": "/v1","paths":{"/myaccounts/{id}":{"get":{"produces": [ "application/json" ],"description": "Returns portfolio information for a single customer based upon the provided id","operationId": "findMyAccountsById","responses":{"404": {
+            "description" : "No account information has been found for the account",
+            "schema" : {
+              "$ref" : "#/definitions/error"
+            }
+          },"200":{"schema": {
+              "properties" : {
+                "customers" : {
+                  "$ref" : "#/definitions/customer"
+                },
+                "accounts" : {
+                  "type" : "array",
+                  "items" : {
+                    "properties" : {
+                      "account" : {
+                        "$ref" : "#/definitions/account"
+                      },
+                      "transactions" : {
+                        "type" : "array",
+                        "items" : {
+                          "$ref" : "#/definitions/transaction"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },"description": "Portfolio information returned for the matching Customer ID"}},"security": [ {
+          "customers_auth" : [ "training.myaccounts.read" ]
+        } ],"parameters": [ {
+          "in" : "path",
+          "name" : "id",
+          "description" : "ID of Customer to retrieve.",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ]}},"/health":{"get":{"responses":{"200":{"description":"successful operation"}},"parameters":[]}},"/server/info":{"get":{"security":[{"customers_auth":["server.info.r"]}],"responses":{"200":{"description":"successful operation"}},"parameters":[]}}},"host": "api.cibc.com","produces": [ "application/json" ],"schemes": [ "http" ],"securityDefinitions":{"customers_auth":{"scopes":{"training.myaccounts.read": "read access","server.info.r":"read server info"},"type": "oauth2","authorizationUrl": "http://localhost:8080/oauth2/code","flow": "implicit"}},"definitions":{"error":{"type": "object","required":["statusCode", "code", "message", "description"],"properties":{"description":{"type": "string"},"code":{"type": "string"},"message":{"type": "string"},"statusCode":{"type": "integer","format": "int32"}}},"account":{"type": "object","required":["id", "customerID", "accountType", "balance"],"properties":{"customerID":{"type": "string","description": "The customer ID identifying the Account holder"},"id":{"type": "string","description": "Account ID"},"balance":{"type": "number","format": "double"},"accountType":{"type": "string","description": "The supported account types","enum":["DEPOSIT", "SAVINGS", "CREDIT", "MORTGAGE", "LOC"]}}},"transaction":{"type": "object","required":["id", "accountID", "transactionType", "amount"],"properties":{"transactionType":{"type": "string","description": "The supported transaction types","enum":["DEBIT", "CREDIT"]},"accountID":{"type": "string","description": "The Account ID identifying the Account"},"amount":{"type": "number","format": "double"},"id":{"type": "string","description": "Transaction ID"}}},"customer":{"type": "object","required":["id", "firstName", "lastName"],"properties":{"firstName":{"type": "string"},"lastName":{"type": "string"},"id":{"type": "string"},"middleInitial":{"type": "string"}}}},"swagger": "2.0","info": {
+    "version" : "1.0.0",
+    "title" : "MyAccounts API",
+    "description" : "MyAccounts API - retrieve the Customer portfolio information",
+    "contact" : {
+      "email" : "cibc.api.reference.training@gmail.com"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },"consumes": [ "application/json" ]}

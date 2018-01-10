@@ -1,0 +1,3 @@
+# path to access within the transacts API
+transacts_path: /v1/transactions?account_id=%s
+transacts_serviceID: training.transacts-1.00.00

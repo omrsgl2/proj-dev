@@ -1,0 +1,81 @@
+{"basePath": "/v1","paths":{"/accounts/{id}":{"get":{"produces": [ "application/json" ],"description": "Returns account information matching an account ID","operationId": "findAccountById","responses":{"404": {
+            "description" : "Transaction has not been found for the specified ID",
+            "schema" : {
+              "$ref" : "#/definitions/error"
+            }
+          },"200":{"schema": {
+              "properties" : {
+                "accounts" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/definitions/account"
+                  }
+                }
+              }
+            },"description": "Account record returned matching the submitted Account ID"}},"security": [ {
+          "accounts_auth" : [ "training.accounts.read" ]
+        } ],"parameters": [ {
+          "in" : "path",
+          "name" : "id",
+          "description" : "ID of Account to retrieve.",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ]}},"/health":{"get":{"responses":{"200":{"description":"successful operation"}},"parameters":[]}},"/accounts":{"get":{"produces": [ "application/json" ],"description": "Returns accounts matching a customer ID","operationId": "findAccountsByCustomerId","responses":{"404": {
+            "description" : "No transaction data has been found for the account",
+            "schema" : {
+              "$ref" : "#/definitions/error"
+            }
+          },"200":{"schema": {
+              "properties" : {
+                "accounts" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/definitions/account"
+                  }
+                }
+              }
+            },"description": "Account informatio returned for the matching Customer ID"}},"security": [ {
+          "accounts_auth" : [ "training.accounts.read" ]
+        } ],"parameters": [ {
+          "in" : "query",
+          "name" : "cust_id",
+          "description" : "Customer Id for which to retrieve the accounts list",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ]}},"/accounts/{id}/transactions":{"get":{"produces": [ "application/json" ],"description": "Returns transaction information matching an account ID","operationId": "findTransactionsByAccountById","responses":{"404": {
+            "description" : "Transactions have not been found for the specified Account ID",
+            "schema" : {
+              "$ref" : "#/definitions/error"
+            }
+          },"200":{"schema": {
+              "properties" : {
+                "transactions" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/definitions/transaction"
+                  }
+                }
+              }
+            },"description": "Account record returned matching the submitted Account ID"}},"security": [ {
+          "accounts_auth" : [ "training.accounts.read" ]
+        } ],"parameters": [ {
+          "in" : "path",
+          "name" : "id",
+          "description" : "ID of Account to retrieve.",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ]}},"/server/info":{"get":{"security":[{"accounts_auth":["server.info.r"]}],"responses":{"200":{"description":"successful operation"}},"parameters":[]}}},"host": "api.cibc.com","produces": [ "application/json" ],"schemes": [ "http" ],"securityDefinitions":{"accounts_auth":{"scopes":{"training.accounts.read": "read access","server.info.r":"read server info"},"type": "oauth2","authorizationUrl": "http://localhost:8080/oauth2/code","flow": "implicit"}},"definitions":{"error":{"type": "object","required":["statusCode", "code", "message", "description"],"properties":{"description":{"type": "string"},"code":{"type": "string"},"message":{"type": "string"},"statusCode":{"type": "integer","format": "int32"}}},"account":{"type": "object","required":["id", "customerID", "accountType", "balance"],"properties":{"customerID":{"type": "string","description": "The customer ID identifying the Account holder"},"id":{"type": "string","description": "Account ID"},"balance":{"type": "number","format": "double"},"accountType":{"type": "string","description": "The supported account types","enum":["DEPOSIT", "SAVINGS", "CREDIT", "MORTGAGE", "LOC"]}}},"transaction":{"type": "object","required":["id", "accountID", "transactionType", "amount"],"properties":{"transactionType":{"type": "string","description": "The supported transaction types","enum":["DEBIT", "CREDIT"]},"accountID":{"type": "string","description": "The Account ID identifying the Account"},"amount":{"type": "number","format": "double"},"id":{"type": "string","description": "Transaction ID"}}}},"swagger": "2.0","info": {
+    "version" : "1.0.0",
+    "title" : "Accounts API",
+    "description" : "Retrieve Account information",
+    "contact" : {
+      "email" : "cibc.api.reference.training@gmail.com"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },"consumes": [ "application/json" ]}
